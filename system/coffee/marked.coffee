@@ -1,6 +1,8 @@
 # Modules
 lodash = require 'lodash'
 marked = require 'marked'
+fs = require 'fs'
+path = require 'path'
 
 config = require './config.js'
 
@@ -32,18 +34,23 @@ getMeta = (source) ->
 
 # Render
 exports.renderMarkdown = (source, opts) ->
+	fileContents = fs.readFileSync source, "utf8"
 	matchers =
 		truncate: /\#{2}\!{2}truncate\s*[\n]?/,
 		linkdef: /^ *\[([^\]]+)\]: *([^\s]+)(?: +["(]([^\n]+)[")])? *(?:\n+|$)/
 
 	setOptions opts
 	# Extract Meta information
-	meta = lodash.extend config.config(), getMeta(source)
-	sourceContent = source.replace /<!--(\n(.*))*-->/g, ""
+	meta = lodash.extend config.config(), getMeta(fileContents)
+	sourceContent = fileContents.replace /<!--(\n(.*))*-->/g, ""
 	tokens = marked.lexer sourceContent
 	content = marked.parser tokens
+	status = if (meta.status) then meta.status else "publish"
 	{
+		id: meta.id
 		content: content
 		author: meta.author
 		title: meta.title
+		status: status
+		source: source
 	}

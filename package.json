@@ -17,7 +17,9 @@
     "url": "https://github.com/carlosrodriguez/carlosrodriguez-me/issues"
   },
   "dependencies": {
+    "crypto": "0.0.3",
     "file": "0.2.1",
+    "flatten": "0.0.1",
     "lodash": "1.2.1",
     "marked": "0.2.9",
     "markdown-extra": "0.1.0",

@@ -1,4 +1,6 @@
 <!--
+id: 119
+status: publish
 Title: Post title 
 Date: June 18, 2012
 -->

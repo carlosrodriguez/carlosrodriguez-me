@@ -1,8 +1,12 @@
-var config, getMeta, lodash, marked, setOptions;
+var config, fs, getMeta, lodash, marked, path, setOptions;
 
 lodash = require('lodash');
 
 marked = require('marked');
+
+fs = require('fs');
+
+path = require('path');
 
 config = require('./config.js');
 
@@ -47,20 +51,25 @@ getMeta = function(source) {
 };
 
 exports.renderMarkdown = function(source, opts) {
-  var content, matchers, meta, sourceContent, tokens;
+  var content, fileContents, matchers, meta, sourceContent, status, tokens;
 
+  fileContents = fs.readFileSync(source, "utf8");
   matchers = {
     truncate: /\#{2}\!{2}truncate\s*[\n]?/,
     linkdef: /^ *\[([^\]]+)\]: *([^\s]+)(?: +["(]([^\n]+)[")])? *(?:\n+|$)/
   };
   setOptions(opts);
-  meta = lodash.extend(config.config(), getMeta(source));
-  sourceContent = source.replace(/<!--(\n(.*))*-->/g, "");
+  meta = lodash.extend(config.config(), getMeta(fileContents));
+  sourceContent = fileContents.replace(/<!--(\n(.*))*-->/g, "");
   tokens = marked.lexer(sourceContent);
   content = marked.parser(tokens);
+  status = meta.status ? meta.status : "publish";
   return {
+    id: meta.id,
     content: content,
     author: meta.author,
-    title: meta.title
+    title: meta.title,
+    status: status,
+    source: source
   };
 };

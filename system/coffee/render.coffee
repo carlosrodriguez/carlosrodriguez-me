@@ -18,7 +18,7 @@ exports.readFiles = (cb) ->
 		lodash.each files, (file) ->
 			ext = path.extname posts + file
 			if ext == ".md"
-				data.push marked.renderMarkdown fs.readFileSync posts + file, "utf8"
+				data.push marked.renderMarkdown posts + file
 		return 
 
 	cb data

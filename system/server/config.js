@@ -10,8 +10,6 @@ dir = path.join(__dirname, '../../');
 
 _login = JSON.parse(fs.readFileSync(dir + "_login.js"));
 
-console.log(_login);
-
 exports.config = function() {
   var config;
 

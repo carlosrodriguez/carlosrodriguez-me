@@ -24,7 +24,7 @@ exports.readFiles = function(cb) {
 
       ext = path.extname(posts + file);
       if (ext === ".md") {
-        return data.push(marked.renderMarkdown(fs.readFileSync(posts + file, "utf8")));
+        return data.push(marked.renderMarkdown(posts + file));
       }
     });
   });
